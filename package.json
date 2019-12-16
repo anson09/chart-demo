@@ -1,0 +1,23 @@
+{
+  "name": "chart-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.html",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "clean": "rm -rf .cache dist",
+    "deploy": ". ./scripts/loadenv.sh && parcel build src/index.html --public-url $PUBLIC_PATH && ./scripts/deploy.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.8.17",
+    "faker": "^4.1.0",
+    "highcharts": "^7.2.1"
+  },
+  "devDependencies": {
+    "parcel": "^1.12.4",
+    "sass": "^1.23.7"
+  }
+}
