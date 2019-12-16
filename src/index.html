@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
   </head>
 
-  <h1>charts demo</h1>
+  <h1>chart demo</h1>
 
   <div id="chart-1-params" class="hide">
     <span>开始日期:</span>
@@ -12,7 +12,11 @@
     <input type="date" name="end_date" value="2018-12-30" /> ~
     <span>截面最大标的数:</span>
     <input type="number" name="max_hold" min="5" max="40" value="20" />
-    <input type="button" value="计算" />
+    <input type="button" name="calc" value="计算" />
+    <br />
+    <span>选择行业:</span>
+    <span class="industry-selector"></span>
+    <input type="button" name="filter" value="筛选" />
   </div>
   <div id="chart-1"></div>
 
@@ -40,6 +44,10 @@
         font-size: 16px;
         margin-left: 20px;
         cursor: pointer;
+      }
+
+      [type="checkbox"]:not(:first-child) {
+        margin-left: 10px;
       }
     }
   </style>

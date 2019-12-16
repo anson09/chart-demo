@@ -1,8 +1,6 @@
-# Charts Demo
+# Chart demo
 
-https://anka.ricequant.com:8084/chart-demo/
-
-## collections of charts demo
+## collections of chart demo
 
 1. chart-1 ~ bulk-holding stocks matrix
 
@@ -14,5 +12,5 @@ https://anka.ricequant.com:8084/chart-demo/
 
 ## production hints
 
-- enable style mode
+- enable highcharts style mode
 - dynamic import modules

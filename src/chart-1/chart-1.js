@@ -5,10 +5,14 @@ import dayjs from "dayjs";
 Heatmap(Highcharts);
 
 let chart_1_data = getData();
+const getIndustrys = chart_1_data => [
+  ...new Set(chart_1_data.map(i => i.assets.map(j => j.industry)).flat())
+];
 
 document.querySelector("#chart-1-params").classList.remove("hide");
+
 document
-  .querySelector("#chart-1-params [type=button]")
+  .querySelector("#chart-1-params [name=calc]")
   .addEventListener("click", function(e) {
     const start_date = document.querySelector(
       "#chart-1-params [name=start_date]"
@@ -48,13 +52,42 @@ document
     }
 
     chart_1_data = getData({ start_date, end_date, max_hold });
+    initIndustrySelector(getIndustrys(chart_1_data));
     render();
   });
 
-function render() {
+initIndustrySelector(getIndustrys(chart_1_data));
+
+document.querySelector("[name=filter]").addEventListener("click", function(e) {
+  const filter_list = [
+    ...document.querySelectorAll("#chart-1-params [type=checkbox]")
+  ]
+    .filter(i => i.checked)
+    .map(i => i.value);
+
+  const filtered_data = JSON.parse(JSON.stringify(chart_1_data)).map(i =>
+    Object.assign(i, {
+      assets: i.assets.filter(j => filter_list.includes(j.industry))
+    })
+  );
+
+  render(filtered_data);
+});
+
+function initIndustrySelector(industrys) {
+  document.querySelector(
+    "#chart-1-params .industry-selector"
+  ).innerHTML = industrys
+    .map(
+      i => `<input type="checkbox" name='industry' value="${i}" checked>${i}`
+    )
+    .join("");
+}
+
+function render(data = chart_1_data) {
   const sorted_assets_list = [
     ...new Set(
-      chart_1_data
+      data
         .map(i => i.assets.map(j => ({ industry: j.industry, name: j.name })))
         .flat()
         .sort((a, b) => {
@@ -67,9 +100,9 @@ function render() {
   ].map(i => JSON.parse(i));
 
   const category_x = sorted_assets_list.map(i => i.name);
-  const category_y = chart_1_data.map(i => i.date);
+  const category_y = data.map(i => i.date);
 
-  const series = chart_1_data
+  const series = data
     .map((i, idx) =>
       i.assets.map(j => ({
         name: j.name,
@@ -84,7 +117,7 @@ function render() {
   Highcharts.chart("chart-1", {
     chart: {
       type: "heatmap",
-      height: chart_1_data.length * 60
+      height: data.length * 60
     },
 
     title: {
@@ -162,19 +195,18 @@ function render() {
     series: [
       {
         borderWidth: 1,
-        borderRadius: 10,
-        data: series,
-        dataLabels: {
-          enabled: true,
-          formatter: function() {
-            return `${Highcharts.numberFormat(this.point.value * 100, 1)}%`;
-          },
-          color: "#000000",
-          rotation: "-90",
-          style: {
-            fontWeight: "light"
-          }
-        }
+        data: series
+        // dataLabels: {
+        //   enabled: true,
+        //   formatter: function() {
+        //     return `${Highcharts.numberFormat(this.point.value * 100, 1)}%`;
+        //   },
+        //   color: "#000000",
+        //   rotation: "-90",
+        //   style: {
+        //     fontWeight: "light"
+        //   }
+        // }
       }
     ]
   });
