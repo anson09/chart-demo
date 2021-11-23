@@ -14,7 +14,7 @@
   "dependencies": {
     "dayjs": "^1.8.17",
     "faker": "^4.1.0",
-    "highcharts": "^7.2.1"
+    "highcharts": "^9.0.0"
   },
   "devDependencies": {
     "parcel": "^1.12.4",
